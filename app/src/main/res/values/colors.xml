@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Created by Jonathan Acampora 2016
+  ~ Copyright (c) 2016. All rights reserved
+  ~
+  ~ Last modified 10/6/16 1:00 PM
+  -->
+
+<resources>
+    <color name="colorPrimary">@color/primary</color>
+    <color name="colorPrimaryDark">@color/primaryDark</color>
+    <color name="colorAccent">@color/accent</color>
+
+    <color name="primary">#FF9800</color>
+    <color name="primaryDark">#F57C00</color>
+    <color name="primaryLight">#FFE0B2</color>
+    <color name="accent">#536DFE</color>
+
+    <color name="primaryText">#212121</color>
+    <color name="secondaryText">#757575</color>
+    <color name="backgroundLight">#FAFAFA</color>
+    <color name="divider">#BDBDBD</color>
+
+    <color name="black_overlay">#66000000</color>
+</resources>
