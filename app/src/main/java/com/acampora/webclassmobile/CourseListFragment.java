@@ -1,23 +1,15 @@
-/*
- * Created by Jonathan Acampora 2016
- * Copyright (c) 2016. All rights reserved
- *
- * Last modified 10/8/16 11:40 PM
- */
-
 package com.acampora.webclassmobile;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.SharedPreferencesCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.app.Fragment;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,32 +21,51 @@ import android.widget.TextView;
 import com.acampora.webclassmobile.data.UserCourse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-
 import javax.security.auth.login.LoginException;
 
-public class CourseListActivity extends AppCompatActivity {
 
-    private static final String TAG = "CourseViewActivity";
+/**
+ * Use the {@link CourseListFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class CourseListFragment extends Fragment {
+
+    private static final String TAG = "CourseListFragment";
 
     ListView listView;
     SwipeRefreshLayout refreshLayout;
 
-    public MoodleRestClient restClient;
+    public CourseListFragment() {
+    }
+
+    public static CourseListFragment newInstance() {
+        CourseListFragment fragment = new CourseListFragment();
+        return fragment;
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate( savedInstanceState);
-        setContentView(R.layout.activity_courses_view);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+        }
+    }
 
-        ActivityCompat.requestPermissions(this,
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        // Inflate the layout for this fragment
+        View rootView = inflater.inflate(R.layout.fragment_course_list, container, false);
+
+        Activity activity = getActivity();
+
+        ActivityCompat.requestPermissions(activity,
                 new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                 1);
 
-        listView = (ListView) findViewById(R.id.listView);
-        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeLayout);
+
+        listView = (ListView) rootView.findViewById(R.id.courseList);
+        refreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.courseSwipeLayout);
 
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -71,68 +82,38 @@ public class CourseListActivity extends AppCompatActivity {
                 displayCourseView (itemAtPosition);
             }
         });
+        refreshCourseList();
 
+        return rootView;
     }
 
-    private void showLoginActivity() {
-        Intent i = new Intent(getApplicationContext(), WelcomeActivity.class);
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
 
-        startActivity(i);
+    @Override
+    public void onDetach() {
+        super.onDetach();
     }
 
     private void refreshCourseList ( ) {
+        if (MoodleSiteConnection.getCurrentConnection() == null || !MoodleSiteConnection.getCurrentConnection().isValidConnection())
+            return;
+
         new DisplayCourseTask().execute();
     }
 
     private void displayCourseView (UserCourse userCourse) {
         userCourse.getSizeBytes();
-        Intent i = new Intent(getApplicationContext(), ModuleListActivity.class);
+        Intent i = new Intent(getActivity(), ModuleListActivity.class);
         i.putExtra("courseId", userCourse.id);
         i.putExtra("courseName", userCourse.shortname);
 
         startActivity(i);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        SharedPreferences preferences = getSharedPreferences("MOODLE_DATA", MODE_PRIVATE);
-        if (preferences != null) {
-            String loginToken = preferences.getString("moodle_token", null);
-            if (loginToken != null) {
-                Log.d(TAG, "Shared preferences login token: " + loginToken);
-                MoodleSiteConnection.currentConnection.token = loginToken;
-            }
-        }
-
-        if (MoodleSiteConnection.getCurrentConnection() == null || !MoodleSiteConnection.getCurrentConnection().isValidConnection())
-            showLoginActivity();
-        else
-            refreshCourseList ( );
-
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE))
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    1);
-
-
-    }
-
-    public void onLogoutClick(View view) {
-
-        SharedPreferences.Editor preferences = getSharedPreferences("MOODLE_DATA", MODE_PRIVATE).edit();
-        if (preferences != null) {
-            preferences.putString("moodle_token", null);
-            preferences.apply();
-        }
-
-        MoodleSiteConnection.getCurrentConnection().logout();
-        Intent i = new Intent(this, WelcomeActivity.class);
-        startActivity(i);
-    }
-
-    class UserCourseAdapter extends ArrayAdapter<UserCourse> {
+    public class UserCourseAdapter extends ArrayAdapter<UserCourse> {
         public UserCourseAdapter(Context context, UserCourse[] users) {
             super(context, 0, users);
         }
@@ -180,7 +161,7 @@ public class CourseListActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(UserCourse[] userCourses) {
 
-            UserCourseAdapter adapter = new UserCourseAdapter(getApplicationContext(), userCourses);
+            UserCourseAdapter adapter = new UserCourseAdapter(getActivity(), userCourses);
             listView.setAdapter(adapter);
             refreshLayout.setRefreshing(false);
         }

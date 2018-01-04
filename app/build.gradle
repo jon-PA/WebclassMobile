@@ -4,7 +4,7 @@ android {
     signingConfigs {
     }
     compileSdkVersion 24
-    buildToolsVersion "24.0.1"
+    buildToolsVersion "25.0.0"
     defaultConfig {
         applicationId "com.acampora.webclassmobile"
         minSdkVersion 19
@@ -39,9 +39,9 @@ dependencies {
             [group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.4.1'],
             [group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.4.1']
     )
+    compile group: 'de.greenrobot', name: 'androidsvg', version: '1.2.2-beta-1-tweaked-2'
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
-    compile group: 'de.greenrobot', name: 'androidsvg', version: '1.2.2-beta-1-tweaked-2'
     compile 'org.jsoup:jsoup:1.8.1'
     compile 'com.android.support:support-v4:24.2.1'
     compile 'com.android.support:recyclerview-v7:24.2.1'

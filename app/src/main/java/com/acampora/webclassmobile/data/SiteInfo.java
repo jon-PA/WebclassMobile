@@ -7,8 +7,12 @@
 
 package com.acampora.webclassmobile.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 public class SiteInfo extends MoodleData
 {
+    @JsonIgnoreProperties(ignoreUnknown = true)
+
     public String sitename;
     public String username;
     public String firstname;

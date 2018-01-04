@@ -19,6 +19,7 @@ import com.acampora.webclassmobile.data.SiteInfo;
 import com.acampora.webclassmobile.data.UserCourse;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -63,6 +64,8 @@ public class MoodleSiteConnection {
     public MoodleSiteConnection(String siteurl, String service) {
         this.siteurl = siteurl;
         this.service = service;
+
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
     public MoodleSiteConnection(String siteurl) {
@@ -82,7 +85,7 @@ public class MoodleSiteConnection {
 
         token = restClient.getUserToken(siteurl, username, password, service, true);
 
-        Log.d("DEBUG", token);
+//        Log.d("DEBUG", token);
         if (token != null) {
             this.token = token;
             return true;
@@ -107,7 +110,7 @@ public class MoodleSiteConnection {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             if (bytes != null) {
-                Log.d("SITEINFO", Arrays.toString(bytes));
+                Log.d("SITEINFO", new String(bytes));
                 parseForLoginError(bytes);
             }
         } catch (IOException e) {
@@ -134,7 +137,7 @@ public class MoodleSiteConnection {
             e.printStackTrace();
         }
 
-        Log.d("TESTING", Arrays.toString(bytes));
+        Log.d("TESTING", new String(bytes));
 
         return false;
     }

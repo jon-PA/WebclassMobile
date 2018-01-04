@@ -80,15 +80,14 @@ public class ModuleListActivity extends AppCompatActivity {
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.frameLayout);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
+        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.frameLayout);
         recyclerView = (RecyclerView) findViewById(R.id.module_list);
         assert recyclerView != null;
 //        setupRecyclerView((RecyclerView) recyclerView);
 
         imageLoader = new ImageLoader(getApplicationContext());
-        Log.d("Module List Activity!", "Creating image loader~~~");
 
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

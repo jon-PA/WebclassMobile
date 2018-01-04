@@ -11,7 +11,12 @@ package com.acampora.webclassmobile.data;
  * Created by Redd on 10/8/2016.
  */
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 public class MoodleException extends MoodleData {
+    @JsonIgnoreProperties (ignoreUnknown = true)
+
     public String exception;
     public String errorcode;
     public String message;

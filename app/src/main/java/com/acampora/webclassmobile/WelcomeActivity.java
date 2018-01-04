@@ -57,10 +57,13 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onResume();
         setFullscreen();
 
-        if (MoodleSiteConnection.getCurrentConnection() == null || !MoodleSiteConnection.getCurrentConnection().isValidConnection())
+        if (MoodleSiteConnection.getCurrentConnection() == null || !MoodleSiteConnection.getCurrentConnection().isValidConnection()) {
+            System.out.println("CONNECTION WAS NULL");
             openLoginActivityButton.setEnabled(true);
-        else
+        } else {
+            System.out.println("CONNECTION WAS NOT NULL");
             finish();
+        }
 
     }
 

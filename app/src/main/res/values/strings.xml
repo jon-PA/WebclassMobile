@@ -25,4 +25,13 @@
     <string name="title_welcome_activity">Welcome</string>
     <string name="webclass_name">Webclass</string>
     <string name="login">Login</string>
+    <string name="title_activity_nav_drawer">Home</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_logout">Logout</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

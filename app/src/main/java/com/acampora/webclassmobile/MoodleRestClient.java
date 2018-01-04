@@ -77,7 +77,7 @@ public class MoodleRestClient {
                 }
             }
         } catch (JsonMappingException e) {
-            Log.d("TESTING", Arrays.toString(responseBytes));
+            Log.d("TESTING", new String(responseBytes));
         } catch (IOException e) {
             e.printStackTrace();
         }
